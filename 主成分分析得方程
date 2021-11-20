@@ -1,0 +1,17 @@
+load data3.txt
+[m,n]=size(data3);
+mu=mean(data3);sigma=std(data3);
+snb=zscore(data3); %数据标准化
+b=snb(:,1:end-1); %x1,x2,x3,x4的数据赋给b
+r=cov(b); %标准化数据的协方差阵就是相关系数阵
+[x,y,z]=pcacov(r);%x为r的特征向量，y为r的特征值，z为各个主成分的贡献率
+num=3; %num为选取的主成分的个数
+f=repmat(sign(sum(x)),size(x,1),1);%构造与x同维数的元素为±1的矩阵
+x=x.*f; %修改特征向量的正负号，使得特征向量的所有分类和为正
+pval=b*x(:,1:num);%计算各个主成分的得分
+rp=[ones(m,1),pval]\snb(:,end); %主成分数据的回归方程系数
+beta=x(:,1:num)*rp(2:num+1); %标准化数据的回归方程系数
+bzh=mu./sigma;
+ch20=mu(end)-bzh(1:end-1)*beta*sigma(end) %原始数据的常数项
+fr=beta';
+ch2=fr./sigma(1:end-1)*sigma(end) %原始数据的x1,x2等等系数
