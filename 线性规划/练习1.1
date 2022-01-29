@@ -1,0 +1,12 @@
+clear,clc
+% options = optimoptions('linprog','Algorithm','dual-simplex'); 
+b=[11 ;-3];
+A=[1 -2 1;4 -1 -2];
+Aeq=[-2 0 1];
+beq=1;
+lb=zeros(3,1);
+f=[-3;1;1];
+% [x,fval]=linprog(f,A,b,Aeq,beq,lb,[],options);加不加都可以，不加会有红字
+[x,fval]=linprog(f,A,b,Aeq,beq,lb,[]);
+x
+fval
