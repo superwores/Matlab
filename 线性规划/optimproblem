@@ -1,0 +1,27 @@
+%基于问题求解
+clear
+clc
+prob=optimproblem('ObjectiveSense','max');
+%这里ObjectiveSense是目标类型为求最大值的意思
+%有时候直接是prob=optimproblem就是默认求最小值
+
+b=[10;8;7];
+A=[2,1
+    1,1
+    0,1];
+x=optimvar('x',1,2,'TYPE','integer','LowerBound',0,'UpperBound',inf);
+
+%optimvar函数是一种类似于赋值的函数
+%第一个‘x’里面是变量名，后面说的是该变量所包含的行数和列数
+%‘TYPE’，后面定义的是该函数所属类型，比如说integer整数型，double双精度型号等
+%‘LowerBound'与'UpperBound'表示下界与上界所跟的0，inf分别是范围
+prob.Objective=f*x;
+%目标函数需要得到一个标量数值，不是矩阵向量！，所以注意自己不能用.*
+%这里是设置目标函数
+prob.Constraints.con=A*x<=b;
+%注意这里不是.*！那个得到的是一个矩阵，这个是线性代数里的矩阵相乘，得到数值，注意维度
+
+[sol fval flag]=solve(prob);
+fval
+sol.x
+
